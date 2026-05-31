@@ -1,5 +1,5 @@
 // js/pages/relatorio.js
-// Histórico de pagamentos + Relatório mensal +_
+// Histórico de pagamentos + Relatório mensal
 
 PAGE_RENDERS.relatorio = async function() {
   const el = document.getElementById('relatorio-content');
@@ -12,7 +12,7 @@ PAGE_RENDERS.relatorio = async function() {
 
     // Carrega tudo necessário
     const [{ data: pagamentos }, { data: parcelas }, { data: propostas }, { data: devedores }] = await Promise.all([
-      sb.from('pagamentos').select('*').order('criado_em', { ascending: false }),
+      sb.from('pagamentos').select('*').order('pago_em', { ascending: false }),
       sb.from('parcelas').select('*'),
       sb.from('propostas_emprestimo').select('id,devedor_id,tipo_taxa,valor_solicitado_centavos,valor_flat_centavos,prazo_meses,sistema_amortizacao'),
       sb.from('devedores').select('id,nome'),
@@ -45,8 +45,8 @@ PAGE_RENDERS.relatorio = async function() {
     // Meses disponíveis nos pagamentos
     const mesesSet = new Set();
     pagEnriquecidos.forEach(p => {
-      if (p.criado_em) {
-        const d = new Date(p.criado_em);
+      if (p.pago_em) {
+        const d = new Date(p.pago_em);
         mesesSet.add(`${d.getFullYear()}-${String(d.getMonth()).padStart(2,'0')}`);
       }
     });
@@ -65,13 +65,13 @@ PAGE_RENDERS.relatorio = async function() {
 
       // Pagamentos do mês
       const pagMes = pagEnriquecidos.filter(p => {
-        const d = new Date(p.criado_em);
+        const d = new Date(p.pago_em);
         return d >= inicio && d <= fim;
       });
 
       // Empréstimos criados no mês
       const empMes = (propostas||[]).filter(p => {
-        const d = new Date(p.criado_em);
+        const d = new Date(p.pago_em);
         return d >= inicio && d <= fim;
       });
 
@@ -169,7 +169,7 @@ PAGE_RENDERS.relatorio = async function() {
                 const enc = (p.valor_multa_centavos||0) + (p.valor_mora_centavos||0);
                 const principal = (p.valor_pago_centavos||0) - enc;
                 return `<tr>
-                  <td style="font-size:12px">${new Date(p.criado_em).toLocaleDateString('pt-BR')}</td>
+                  <td style="font-size:12px">${new Date(p.pago_em).toLocaleDateString('pt-BR')}</td>
                   <td><b>${p.nome}</b></td>
                   <td style="font-family:var(--mono);font-size:12px;color:var(--muted)">${p.numero_parcela ? String(p.numero_parcela).padStart(2,'0') : '—'}</td>
                   <td style="font-size:12px;color:var(--muted)">${p.metodo||'—'}</td>
@@ -191,7 +191,7 @@ PAGE_RENDERS.relatorio = async function() {
               ${pagEnriquecidos.length ? pagEnriquecidos.map(p => {
                 const enc = (p.valor_multa_centavos||0) + (p.valor_mora_centavos||0);
                 return `<tr>
-                  <td style="font-size:12px">${new Date(p.criado_em).toLocaleDateString('pt-BR')}</td>
+                  <td style="font-size:12px">${new Date(p.pago_em).toLocaleDateString('pt-BR')}</td>
                   <td><b>${p.nome}</b></td>
                   <td style="font-family:var(--mono);font-size:12px;color:var(--muted)">${p.numero_parcela ? String(p.numero_parcela).padStart(2,'0') : '—'}</td>
                   <td style="font-size:12px;color:var(--muted)">${p.metodo||'—'}</td>
