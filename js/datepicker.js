@@ -1,4 +1,4 @@
-// js/datepicker.js — Date Picker para Creditadora
+// js/datepicker.js — Date Picker para Creditadora.
 (function () {
   const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
                  'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
