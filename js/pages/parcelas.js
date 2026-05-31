@@ -1,67 +1,39 @@
 // js/pages/parcelas.js
-PAGE_RENDERS.parcelas = async function renderParcelas() {
+PAGE_RENDERS.parcelas = async function() {
   const el = document.getElementById('parcelas-content');
-  el.innerHTML = `<div style="padding:40px;display:flex;align-items:center;gap:10px;color:var(--muted)"><div class="spinner"></div> Carregando...</div>`;
+  el.innerHTML = `<div class="loading-wrap"><div class="spinner"></div> Carregando…</div>`;
 
   try {
-    const { data: parcelas } = await sb
-      .from('parcelas').select('*')
-      .neq('status', 'PAGA')
-      .order('data_vencimento');
+    const [{ data: parcelas }, { data: propostas }, { data: perfis }] = await Promise.all([
+      sb.from('parcelas').select('*').neq('status','PAGA').order('data_vencimento'),
+      sb.from('propostas_emprestimo').select('id,usuario_id'),
+      sb.from('perfis').select('id,nome_completo'),
+    ]);
 
-    const { data: propostas } = await sb.from('propostas_emprestimo').select('id,usuario_id');
-    const { data: perfis    } = await sb.from('perfis').select('id,nome_completo');
-
-    const nomeDevedor = (parcelaId) => {
-      // acha proposta pela parcela
-      // (vindo da parcela, precisamos do proposta_id que já vem no select)
-      return '—';
-    };
-
-    // Enriquece com nome
-    const lista = (parcelas || []).map(p => {
-      const prop  = propostas?.find(pr => pr.id === p.proposta_id);
-      const nome  = prop ? perfis?.find(pf => pf.id === prop.usuario_id)?.nome_completo : '—';
-      const at    = calcAtraso(p.valor_total_centavos, p.data_vencimento);
+    const lista = (parcelas||[]).map(p => {
+      const prop = (propostas||[]).find(pr => pr.id === p.proposta_id);
+      const nome = prop ? (perfis||[]).find(pf => pf.id === prop.usuario_id)?.nome_completo : '—';
+      const at   = calcAtraso(p.valor_total_centavos, p.data_vencimento);
       return { ...p, nome, at };
     });
 
-    // KPIs
     const atrasadas = lista.filter(p => p.at.dias > 0);
-    const hoje7     = lista.filter(p => p.at.dias === 0 && diasAte(p.data_vencimento) <= 7 && diasAte(p.data_vencimento) >= 0);
-    const totalEm   = lista.reduce((a, p) => a + p.at.total, 0);
+    const vence7    = lista.filter(p => p.at.dias === 0 && diasAte(p.data_vencimento) <= 7 && diasAte(p.data_vencimento) >= 0);
     const totalMultas = atrasadas.reduce((a, p) => a + p.at.multa + p.at.mora, 0);
+    const totalReceber = lista.reduce((a, p) => a + p.at.total, 0);
 
     el.innerHTML = `
       <div class="kgrid">
-        <div class="kcard" style="--kc:var(--brand)">
-          <div class="klabel">Em Aberto</div>
-          <div class="kval">${lista.length}</div>
-          <div class="ksub">parcelas pendentes</div>
-        </div>
-        <div class="kcard" style="--kc:var(--red)">
-          <div class="klabel">Atrasadas</div>
-          <div class="kval bad">${atrasadas.length}</div>
-          <div class="ksub">com multa e mora</div>
-        </div>
-        <div class="kcard" style="--kc:var(--amber)">
-          <div class="klabel">Vencem em 7 dias</div>
-          <div class="kval warn">${hoje7.length}</div>
-          <div class="ksub">atenção ao prazo</div>
-        </div>
-        <div class="kcard" style="--kc:var(--green)">
-          <div class="klabel">Total a Receber</div>
-          <div class="kval ok">${fmt(totalEm)}</div>
-          <div class="ksub">incl. ${fmt(totalMultas)} em multas</div>
-        </div>
+        <div class="kcard"><div class="klabel">Em aberto</div><div class="kval">${lista.length}</div><div class="ksub">parcelas pendentes</div></div>
+        <div class="kcard"><div class="klabel">Atrasadas</div><div class="kval t">${atrasadas.length}</div><div class="ksub">com encargos</div></div>
+        <div class="kcard"><div class="klabel">Vencem em 7d</div><div class="kval a">${vence7.length}</div><div class="ksub">atenção ao prazo</div></div>
+        <div class="kcard"><div class="klabel">Total a receber</div><div class="kval g">${fmt(totalReceber)}</div><div class="ksub">incl. ${fmt(totalMultas)} em multas</div></div>
       </div>
 
-      <div class="shead">Parcelas em Aberto</div>
+      <div class="sec-label">Parcelas em aberto</div>
       <div class="twrap">
         <table class="ttable">
-          <thead><tr>
-            <th>Devedor</th><th>#</th><th>Vencimento</th><th>Dias</th><th>Valor Original</th><th>Com Encargos</th><th>Status</th><th></th>
-          </tr></thead>
+          <thead><tr><th>Devedor</th><th>#</th><th>Vencimento</th><th>Dias</th><th>Valor</th><th>Encargos</th><th></th></tr></thead>
           <tbody>
             ${lista.map(p => {
               const dias = diasAte(p.data_vencimento);
@@ -71,19 +43,19 @@ PAGE_RENDERS.parcelas = async function renderParcelas() {
                 : dias <= 7 ? `<span class="dias-warn">${dias}d</span>`
                 : `<span class="dias-ok">${dias}d</span>`;
               const encStr = p.at.dias > 0
-                ? `<span class="bad">${fmt(p.at.total)}</span><br><span style="font-size:.62rem;color:var(--muted)">multa: ${fmt(p.at.multa)} · mora: ${fmt(p.at.mora)}</span>`
-                : `<span style="color:var(--muted)">—</span>`;
+                ? `<div style="font-size:12px;color:var(--terra)">+${fmt(p.at.multa+p.at.mora)}</div>
+                   <div style="font-size:11px;color:var(--muted)">multa+mora</div>`
+                : `<span style="color:var(--muted);font-size:12px">—</span>`;
               return `<tr>
                 <td><b>${p.nome}</b></td>
-                <td style="color:var(--muted);font-size:.7rem">${String(p.numero).padStart(2,'0')}</td>
-                <td>${fmtData(p.data_vencimento)}</td>
+                <td style="font-family:var(--mono);font-size:12px;color:var(--muted)">${String(p.numero).padStart(2,'0')}</td>
+                <td style="font-size:13px">${fmtData(p.data_vencimento)}</td>
                 <td>${dStr}</td>
-                <td>${fmt(p.valor_total_centavos)}</td>
+                <td><b>${p.at.dias > 0 ? `<span style="color:var(--terra)">${fmt(p.at.total)}</span>` : fmt(p.valor_total_centavos)}</b></td>
                 <td>${encStr}</td>
-                <td>${tagStatus(p.at.dias > 0 ? 'ATRASADA' : p.status)}</td>
-                <td><button class="btn btn-r" style="padding:3px 10px;font-size:.65rem" onclick="abrirPagamento('${p.id}',${p.valor_total_centavos},'${p.data_vencimento}')">Pagar</button></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="abrirPagamento('${p.id}',${p.valor_total_centavos},'${p.data_vencimento}')">Pagar</button></td>
               </tr>`;
-            }).join('') || `<tr><td colspan="8" class="empty">Nenhuma parcela em aberto. 🎉</td></tr>`}
+            }).join('') || `<tr><td colspan="7" class="empty">Todas as parcelas estão em dia! 🎉</td></tr>`}
           </tbody>
         </table>
       </div>
@@ -93,20 +65,16 @@ PAGE_RENDERS.parcelas = async function renderParcelas() {
   }
 };
 
-// ── Registrar pagamento ────────────────────────────────────────────
 function abrirPagamento(parcelaId, valorCentavos, dataVenc) {
   const at = calcAtraso(valorCentavos, dataVenc);
   document.getElementById('pay-id').value    = parcelaId;
   document.getElementById('pay-valor').value = (at.total / 100).toFixed(2);
-
-  let info = '';
-  if (at.dias > 0) {
-    info = `<div class="alert alert-warn" style="margin-bottom:10px">
-      ${at.dias} dias de atraso · Multa: ${fmt(at.multa)} · Mora: ${fmt(at.mora)}<br>
-      <b>Total com encargos: ${fmt(at.total)}</b>
-    </div>`;
-  }
-  document.getElementById('pay-info').innerHTML = info;
+  document.getElementById('pay-info').innerHTML = at.dias > 0
+    ? `<div class="alert alert-bad" style="margin-bottom:12px">
+        <b>${at.dias} dia${at.dias > 1 ? 's' : ''} de atraso</b><br>
+        Multa: ${fmt(at.multa)} · Mora: ${fmt(at.mora)}<br>
+        Total com encargos: <b>${fmt(at.total)}</b>
+      </div>` : '';
   openMod('pagamento');
 }
 
@@ -114,45 +82,39 @@ async function confirmarPagamento() {
   const parcelaId = document.getElementById('pay-id').value;
   const valor     = parseFloat(document.getElementById('pay-valor').value) || 0;
   const metodo    = document.getElementById('pay-metodo').value;
-
   if (!valor) { toast('Informe o valor.', 'err'); return; }
 
-  const valorCentavos = Math.round(valor * 100);
-
-  // Busca a parcela pra calcular encargos
   const { data: parc } = await sb.from('parcelas').select('*').eq('id', parcelaId).single();
   const at = calcAtraso(parc.valor_total_centavos, parc.data_vencimento);
 
-  // Registra pagamento
-  const { error: errPag } = await sb.from('pagamentos').insert({
+  await sb.from('pagamentos').insert({
     parcela_id: parcelaId,
-    valor_pago_centavos: valorCentavos,
+    valor_pago_centavos:  Math.round(valor * 100),
     valor_multa_centavos: at.multa,
-    valor_mora_centavos: at.mora,
+    valor_mora_centavos:  at.mora,
     metodo,
   });
-  if (errPag) { toast(errPag.message, 'err'); return; }
 
-  // Atualiza parcela
   await sb.from('parcelas').update({
     status: 'PAGA',
     data_pagamento: new Date().toISOString().split('T')[0],
     multa_centavos: at.multa,
-    mora_centavos: at.mora,
+    mora_centavos:  at.mora,
   }).eq('id', parcelaId);
 
-  // Verifica se todas as parcelas foram pagas
-  const { data: pendentes } = await sb.from('parcelas')
-    .select('id').eq('proposta_id', parc.proposta_id).neq('status', 'PAGA');
-
-  if (!pendentes?.length) {
+  const { data: restantes } = await sb.from('parcelas')
+    .select('id').eq('proposta_id', parc.proposta_id).neq('status','PAGA');
+  if (!restantes?.length) {
     await sb.from('propostas_emprestimo').update({ status: 'EM_DIA' }).eq('id', parc.proposta_id);
+  } else {
+    await sb.from('propostas_emprestimo').update({ status: 'EM_DIA' })
+      .eq('id', parc.proposta_id).eq('status','INADIMPLENTE');
   }
 
-  toast('Pagamento registrado!');
+  toast('Pagamento registrado!', 'ok2');
   closeMod('pagamento');
   PAGE_RENDERS.parcelas();
 }
 
-window.abrirPagamento    = abrirPagamento;
+window.abrirPagamento     = abrirPagamento;
 window.confirmarPagamento = confirmarPagamento;

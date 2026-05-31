@@ -1,20 +1,18 @@
 // js/app.js
 
-// ── Helpers de formato ────────────────────────────────────────────
+// ── Formatação ────────────────────────────────────────
 function fmt(centavos) {
   return 'R$\u00a0' + (centavos / 100).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2, maximumFractionDigits: 2,
+    minimumFractionDigits: 2, maximumFractionDigits: 2
   });
 }
 function fmtData(str) {
   if (!str) return '—';
-  const d = new Date(str + 'T00:00:00');
-  return d.toLocaleDateString('pt-BR');
+  return new Date(str + 'T00:00:00').toLocaleDateString('pt-BR');
 }
 function diasAte(dataStr) {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const alvo = new Date(dataStr + 'T00:00:00');
-  return Math.ceil((alvo - hoje) / 86400000);
+  return Math.ceil((new Date(dataStr + 'T00:00:00') - hoje) / 86400000);
 }
 function calcAtraso(valorCentavos, dataVenc) {
   const dias = Math.max(-diasAte(dataVenc), 0);
@@ -24,52 +22,57 @@ function calcAtraso(valorCentavos, dataVenc) {
   return { dias, multa, mora, total: valorCentavos + multa + mora };
 }
 function tagStatus(status) {
-  const map = {
-    EM_ANALISE:'tag-info',APROVADA:'tag-ok',RECUSADA:'tag-bad',
-    AGUARDANDO_ASSINATURA:'tag-purple',PAGO:'tag-ok',EM_DIA:'tag-ok',
-    INADIMPLENTE:'tag-bad',PENDENTE:'tag-info',PAGA:'tag-ok',ATRASADA:'tag-bad',
+  const cls = {
+    EM_DIA:'tag-ok', PAGO:'tag-ok', APROVADA:'tag-ok',
+    INADIMPLENTE:'tag-bad', RECUSADA:'tag-bad', ATRASADA:'tag-bad',
+    PENDENTE:'tag-info', EM_ANALISE:'tag-info',
+    AGUARDANDO_ASSINATURA:'tag-warn', PAGA:'tag-ok',
   };
-  const label = {
-    EM_ANALISE:'Em Análise',APROVADA:'Aprovada',RECUSADA:'Recusada',
-    AGUARDANDO_ASSINATURA:'Aguard. Assinatura',PAGO:'Pago',EM_DIA:'Em Dia',
-    INADIMPLENTE:'Inadimplente',PENDENTE:'Pendente',PAGA:'Paga',ATRASADA:'Atrasada',
+  const lbl = {
+    EM_DIA:'Em Dia', PAGO:'Pago', APROVADA:'Aprovada',
+    INADIMPLENTE:'Inadimplente', RECUSADA:'Recusada', ATRASADA:'Atrasada',
+    PENDENTE:'Pendente', EM_ANALISE:'Em Análise',
+    AGUARDANDO_ASSINATURA:'Ag. Assinatura', PAGA:'Paga',
   };
-  return `<span class="tag ${map[status]||'tag-info'}">${label[status]||status}</span>`;
+  return `<span class="tag ${cls[status]||'tag-neu'}">${lbl[status]||status}</span>`;
 }
-window.fmt = fmt; window.fmtData = fmtData;
-window.diasAte = diasAte; window.calcAtraso = calcAtraso;
+window.fmt = fmt;
+window.fmtData = fmtData;
+window.diasAte = diasAte;
+window.calcAtraso = calcAtraso;
 window.tagStatus = tagStatus;
 
-// ── Toast ─────────────────────────────────────────────────────────
+// ── Toast ─────────────────────────────────────────────
 function toast(msg, tipo = 'ok') {
   const el = document.getElementById('toast');
   el.textContent = msg;
-  el.className = 'show' + (tipo === 'err' ? ' err' : '');
+  el.className = 'show' + (tipo === 'err' ? ' err' : tipo === 'ok2' ? ' ok2' : '');
   clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 3500);
+  el._t = setTimeout(() => el.classList.remove('show'), 3200);
 }
 window.toast = toast;
 
-// ── Modal ─────────────────────────────────────────────────────────
+// ── Modal ─────────────────────────────────────────────
 function openMod(id)  { document.getElementById('mod-' + id)?.classList.add('open'); }
 function closeMod(id) { document.getElementById('mod-' + id)?.classList.remove('open'); }
-window.openMod = openMod; window.closeMod = closeMod;
+window.openMod = openMod;
+window.closeMod = closeMod;
 
-// ── Sidebar mobile ────────────────────────────────────────────────
+// ── Sidebar mobile ────────────────────────────────────
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('mob-open');
   document.getElementById('sidebar-overlay').classList.toggle('show');
 }
 window.toggleSidebar = toggleSidebar;
 
-// ── Navegação de páginas ──────────────────────────────────────────
+// ── Navegação ─────────────────────────────────────────
 const PAGE_TITLES = {
-  dashboard: 'Dashboard',
+  dashboard:   'Dashboard',
   emprestimos: 'Empréstimos',
-  devedores: 'Devedores',
-  parcelas: 'Parcelas',
+  parcelas:    'Parcelas',
+  devedores:   'Devedores',
 };
-const PAGE_RENDERS = {};
+window.PAGE_RENDERS = {};
 
 function goPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('act'));
@@ -82,14 +85,17 @@ function goPage(id) {
   PAGE_RENDERS[id]?.();
 }
 window.goPage = goPage;
-window.PAGE_RENDERS = PAGE_RENDERS;
 
-// ── Iniciar app após login ────────────────────────────────────────
+// ── Iniciar app ───────────────────────────────────────
 function iniciarApp(user) {
   document.getElementById('auth-screen').classList.remove('show');
   document.getElementById('app').classList.add('show');
   document.getElementById('mob-header').style.display = '';
-  document.getElementById('side-email').textContent = user.email;
+
+  const inicial = (user.email || 'U')[0].toUpperCase();
+  const av = document.getElementById('side-avatar');
+  if (av) { av.textContent = inicial; av.title = user.email; }
+
   goPage('dashboard');
 }
 window.iniciarApp = iniciarApp;

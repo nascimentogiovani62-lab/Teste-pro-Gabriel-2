@@ -1,5 +1,4 @@
 // js/auth.js
-
 async function doLogin() {
   const email = document.getElementById('auth-email').value.trim();
   const senha  = document.getElementById('auth-pass').value;
@@ -10,21 +9,14 @@ async function doLogin() {
     msg.textContent = 'Preencha e-mail e senha.';
     msg.className = 'auth-msg err'; return;
   }
-
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
-  msg.textContent = '';
+  btn.disabled = true; btn.textContent = 'Entrando…'; msg.textContent = '';
 
   const { data, error } = await sb.auth.signInWithPassword({ email, password: senha });
-
   if (error) {
     msg.textContent = 'E-mail ou senha incorretos.';
     msg.className = 'auth-msg err';
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-    return;
+    btn.disabled = false; btn.textContent = 'Entrar'; return;
   }
-
   iniciarApp(data.user);
 }
 
@@ -36,9 +28,10 @@ async function doLogout() {
   document.getElementById('auth-email').value = '';
   document.getElementById('auth-pass').value  = '';
   document.getElementById('auth-msg').textContent = '';
+  document.getElementById('auth-btn').textContent = 'Entrar';
+  document.getElementById('auth-btn').disabled = false;
 }
 
-// Verifica sessão existente ao carregar a página
 (async function verificarSessao() {
   const { data: { session } } = await sb.auth.getSession();
   if (session?.user) {

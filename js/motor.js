@@ -1,5 +1,4 @@
-// js/motor.js — Motor de crédito (roda no browser, sem backend)
-
+// js/motor.js
 const Motor = {
   gerarPrice(principalCentavos, taxaMensal, prazoMeses, diaVenc = 5) {
     const i = taxaMensal / 100;
@@ -8,19 +7,15 @@ const Motor = {
     const hoje = new Date();
     const parcelas = [];
     let saldo = principalCentavos;
-
     for (let k = 1; k <= n; k++) {
       const juros  = Math.round(saldo * i);
       const amort  = k === n ? saldo : Math.min(pmt - juros, saldo);
       const venc   = new Date(hoje.getFullYear(), hoje.getMonth() + k, diaVenc);
-      const ymd    = venc.toISOString().split('T')[0];
       parcelas.push({
-        numero: k,
-        valorTotal: amort + juros,
-        principal: amort,
-        juros,
+        numero: k, valorTotal: amort + juros,
+        principal: amort, juros,
         saldoDevedor: saldo - amort,
-        dataVencimento: ymd,
+        dataVencimento: venc.toISOString().split('T')[0],
       });
       saldo -= amort;
     }
@@ -33,19 +28,15 @@ const Motor = {
     const hoje = new Date();
     const parcelas = [];
     let saldo = principalCentavos;
-
     for (let k = 1; k <= prazoMeses; k++) {
       const amort = k === prazoMeses ? saldo : amortFixa;
       const juros = Math.round(saldo * i);
       const venc  = new Date(hoje.getFullYear(), hoje.getMonth() + k, diaVenc);
-      const ymd   = venc.toISOString().split('T')[0];
       parcelas.push({
-        numero: k,
-        valorTotal: amort + juros,
-        principal: amort,
-        juros,
+        numero: k, valorTotal: amort + juros,
+        principal: amort, juros,
         saldoDevedor: saldo - amort,
-        dataVencimento: ymd,
+        dataVencimento: venc.toISOString().split('T')[0],
       });
       saldo -= amort;
     }
@@ -58,10 +49,12 @@ const Motor = {
   },
 
   resumo(parcelas) {
-    const total  = parcelas.reduce((a, p) => a + p.valorTotal, 0);
-    const juros  = parcelas.reduce((a, p) => a + p.juros, 0);
-    return { total, juros };
+    return {
+      total:  parcelas.reduce((a, p) => a + p.valorTotal, 0),
+      juros:  parcelas.reduce((a, p) => a + p.juros, 0),
+      primeiro: parcelas[0],
+      ultimo:   parcelas[parcelas.length - 1],
+    };
   },
 };
-
 window.Motor = Motor;
