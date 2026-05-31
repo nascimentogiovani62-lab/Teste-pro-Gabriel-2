@@ -1,4 +1,4 @@
-// js/pages/postits.js — Mural geral
+
 
 PAGE_RENDERS.postits = async function() {
   const el = document.getElementById('postits-content');
