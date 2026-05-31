@@ -1,4 +1,4 @@
-// js/pages/dashboard.js — v2
+// js/pages/dashboard.js — v2.
 // KPIs + alertas de vencimento + acesso rápido ao relatório
 
 PAGE_RENDERS.dashboard = async function() {
