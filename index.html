@@ -129,6 +129,9 @@
     <div class="side-footer">
       <div class="side-avatar" id="side-avatar" title="Sair" onclick="doLogout()">G</div>
     </div>
+    <div class="ni" id="nav-postits" data-tip="Post-its" onclick="goPage('postits')">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+</div>
   </aside>
 
   <main>
@@ -137,6 +140,9 @@
       <div class="tb-right">
         <button class="btn btn-ghost btn-sm" onclick="goPage('devedores');novoDevedor()">+ Devedor</button>
         <button class="btn btn-dark btn-sm" onclick="abrirNovoEmprestimo()">+ Empréstimo</button>
+        <div class="content page" id="page-postits">
+  <div id="postits-content"></div>
+</div>
       </div>
     </div>
 
@@ -252,6 +258,7 @@
 <script src="js/pages/emprestimos.js"></script>
 <script src="js/pages/parcelas.js"></script>
 <script src="js/pages/devedores.js"></script>
+<script src="js/pages/postits.js"></script>
 <script src="js/auth.js"></script>
 </body>
 </html>
