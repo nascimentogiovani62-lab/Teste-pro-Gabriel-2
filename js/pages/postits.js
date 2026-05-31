@@ -1,4 +1,4 @@
-
+//alguma coisa//
 
 PAGE_RENDERS.postits = async function() {
   const el = document.getElementById('postits-content');
