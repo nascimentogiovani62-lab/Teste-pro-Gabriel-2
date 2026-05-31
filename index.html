@@ -31,20 +31,15 @@
           <div class="al-logo-sub">Soluções Financeiras</div>
         </div>
       </div>
-
       <div class="al-mockup">
         <div class="al-mock-bar">
-          <div class="al-mock-dot r"></div>
-          <div class="al-mock-dot y"></div>
-          <div class="al-mock-dot g"></div>
+          <div class="al-mock-dot r"></div><div class="al-mock-dot y"></div><div class="al-mock-dot g"></div>
           <div class="al-mock-url"></div>
         </div>
         <div class="al-mock-body">
           <div class="al-mock-sidebar">
-            <div class="al-mock-icon act"></div>
-            <div class="al-mock-icon"></div>
-            <div class="al-mock-icon"></div>
-            <div class="al-mock-icon"></div>
+            <div class="al-mock-icon act"></div><div class="al-mock-icon"></div>
+            <div class="al-mock-icon"></div><div class="al-mock-icon"></div>
           </div>
           <div class="al-mock-content">
             <div class="al-mock-kpis">
@@ -60,14 +55,12 @@
           </div>
         </div>
       </div>
-
       <div class="al-tagline">
         <h2>Seu dinheiro emprestado, sempre sob controle.</h2>
         <p>Controle quem deve, quanto deve e quando paga. Multa e mora calculados automaticamente.</p>
       </div>
     </div>
   </div>
-
   <div class="auth-right">
     <div class="auth-box">
       <div class="auth-eyebrow">Saburi Credit</div>
@@ -135,6 +128,9 @@
       <div class="ni" id="nav-devedores" data-tip="Devedores" onclick="goPage('devedores')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
+      <div class="ni" id="nav-relatorio" data-tip="Relatório" onclick="goPage('relatorio')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
       <div class="ni" id="nav-postits" data-tip="Post-its" onclick="goPage('postits')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </div>
@@ -158,11 +154,12 @@
     <div class="content page" id="page-emprestimos"><div id="emprestimos-content"></div></div>
     <div class="content page" id="page-parcelas"><div id="parcelas-content"></div></div>
     <div class="content page" id="page-devedores"><div id="devedores-content"></div></div>
+    <div class="content page" id="page-relatorio"><div id="relatorio-content"></div></div>
     <div class="content page" id="page-postits"><div id="postits-content"></div></div>
   </main>
 </div>
 
-<!-- ═══ MODAL: PAGAMENTO (único modal fixo restante) ═════ -->
+<!-- ═══ MODAL: PAGAMENTO ══════════════════════════════════ -->
 <div class="moverlay" id="mod-pagamento" onclick="if(event.target===this)closeMod('pagamento')">
   <div class="modal">
     <div class="modal-title">Registrar Pagamento</div>
@@ -199,9 +196,10 @@
 <script src="js/pages/emprestimos.js"></script>
 <script src="js/pages/parcelas.js"></script>
 <script src="js/pages/devedores.js"></script>
+<script src="js/pages/relatorio.js"></script>
 <script src="js/pages/postits.js"></script>
-<script src="js/auth.js"></script>
 <script src="js/select-custom.js"></script>
 <script src="js/datepicker.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
