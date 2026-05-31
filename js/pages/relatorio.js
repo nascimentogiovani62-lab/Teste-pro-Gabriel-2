@@ -1,5 +1,5 @@
 // js/pages/relatorio.js
-// Histórico de pagamentos + Relatório mensal
+// Histórico de pagamentos + Relatório mensal +_
 
 PAGE_RENDERS.relatorio = async function() {
   const el = document.getElementById('relatorio-content');
