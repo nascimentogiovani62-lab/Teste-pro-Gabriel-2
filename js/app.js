@@ -71,6 +71,7 @@ const PAGE_TITLES = {
   emprestimos: 'Empréstimos',
   parcelas:    'Parcelas',
   devedores:   'Devedores',
+  postits: 'Post-its',
 };
 window.PAGE_RENDERS = {};
 
