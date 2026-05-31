@@ -15,9 +15,7 @@
 <div id="auth-screen">
   <div class="auth-left" aria-hidden="true">
     <div class="auth-left-inner">
-
       <div class="al-brand">
-        <!-- Logo SVG inline -->
         <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
           <circle cx="22" cy="22" r="22" fill="#1a2e4a"/>
           <path d="M8 22 Q8 8 22 8 Q36 8 36 22" fill="none" stroke="#f0ebe0" stroke-width="3" stroke-linecap="round"/>
@@ -49,35 +47,14 @@
           </div>
           <div class="al-mock-content">
             <div class="al-mock-kpis">
-              <div class="al-mock-kpi">
-                <div class="al-mock-kpi-l">Carteira</div>
-                <div class="al-mock-kpi-v">R$ 48k</div>
-              </div>
-              <div class="al-mock-kpi">
-                <div class="al-mock-kpi-l">Em dia</div>
-                <div class="al-mock-kpi-v g">12</div>
-              </div>
-              <div class="al-mock-kpi">
-                <div class="al-mock-kpi-l">Atrasados</div>
-                <div class="al-mock-kpi-v t">3</div>
-              </div>
+              <div class="al-mock-kpi"><div class="al-mock-kpi-l">Carteira</div><div class="al-mock-kpi-v">R$ 48k</div></div>
+              <div class="al-mock-kpi"><div class="al-mock-kpi-l">Em dia</div><div class="al-mock-kpi-v g">12</div></div>
+              <div class="al-mock-kpi"><div class="al-mock-kpi-l">Atrasados</div><div class="al-mock-kpi-v t">3</div></div>
             </div>
             <div class="al-mock-rows">
-              <div class="al-mock-row">
-                <span class="al-mock-row-name">João Silva</span>
-                <span class="al-mock-row-val">R$ 850</span>
-                <span class="al-mock-row-tag bad">12d atraso</span>
-              </div>
-              <div class="al-mock-row">
-                <span class="al-mock-row-name">Maria Lopes</span>
-                <span class="al-mock-row-val">R$ 420</span>
-                <span class="al-mock-row-tag ok">Em dia</span>
-              </div>
-              <div class="al-mock-row">
-                <span class="al-mock-row-name">Carlos M.</span>
-                <span class="al-mock-row-val">R$ 1.200</span>
-                <span class="al-mock-row-tag warn">Vence 3d</span>
-              </div>
+              <div class="al-mock-row"><span class="al-mock-row-name">João Silva</span><span class="al-mock-row-val">R$ 850</span><span class="al-mock-row-tag bad">12d atraso</span></div>
+              <div class="al-mock-row"><span class="al-mock-row-name">Maria Lopes</span><span class="al-mock-row-val">R$ 420</span><span class="al-mock-row-tag ok">Em dia</span></div>
+              <div class="al-mock-row"><span class="al-mock-row-name">Carlos M.</span><span class="al-mock-row-val">R$ 1.200</span><span class="al-mock-row-tag warn">Vence 3d</span></div>
             </div>
           </div>
         </div>
@@ -87,7 +64,6 @@
         <h2>Seu dinheiro emprestado, sempre sob controle.</h2>
         <p>Controle quem deve, quanto deve e quando paga. Multa e mora calculados automaticamente.</p>
       </div>
-
     </div>
   </div>
 
@@ -133,7 +109,6 @@
   <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <aside id="sidebar">
-    <!-- Logo na sidebar -->
     <div style="display:flex;align-items:center;justify-content:center;padding:18px 0 14px">
       <svg width="32" height="32" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
         <circle cx="22" cy="22" r="22" fill="#1a2e4a"/>
@@ -186,70 +161,7 @@
   </main>
 </div>
 
-<!-- ═══ MODAL: NOVO DEVEDOR ══════════════════════════════ -->
-<div class="moverlay" id="mod-novo-devedor" onclick="if(event.target===this)closeMod('novo-devedor')">
-  <div class="modal">
-    <div class="modal-title" id="mod-dev-titulo">Novo Devedor</div>
-    <div class="modal-desc">Cadastre os dados de quem vai receber o empréstimo.</div>
-    <input type="hidden" id="dev-id">
-    <div class="fg" style="margin-bottom:12px">
-      <label>Nome Completo *</label>
-      <input type="text" id="dev-nome" placeholder="João da Silva">
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="fg"><label>Telefone</label><input type="text" id="dev-tel" placeholder="(16) 99999-9999"></div>
-      <div class="fg"><label>Renda Mensal (R$)</label><input type="number" id="dev-renda" placeholder="3000" step="100"></div>
-    </div>
-    <div class="fg" style="margin-bottom:4px">
-      <label>Observação</label>
-      <input type="text" id="dev-obs" placeholder="Ex: cliente antigo, referência...">
-    </div>
-    <div class="mbtns">
-      <button class="btn btn-ghost" onclick="closeMod('novo-devedor')">Cancelar</button>
-      <button class="btn btn-dark" onclick="salvarDevedor()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL: NOVO EMPRÉSTIMO ═══════════════════════════ -->
-<div class="moverlay" id="mod-novo-emp" onclick="if(event.target===this)closeMod('novo-emp')">
-  <div class="modal" style="width:500px">
-    <div class="modal-title">Novo Empréstimo</div>
-    <div class="modal-desc">Configure e simule antes de confirmar.</div>
-    <div class="fg" style="margin-bottom:12px">
-      <label>Devedor *</label>
-      <select id="emp-devedor"></select>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="fg"><label>Valor (R$) *</label><input type="number" id="emp-valor" placeholder="5.000" step="100" oninput="simularEmprestimo()"></div>
-      <div class="fg"><label>Taxa Mensal (%) *</label><input type="number" id="emp-taxa" placeholder="3.5" step="0.1" value="3.5" oninput="simularEmprestimo()"></div>
-      <div class="fg"><label>Prazo (meses) *</label><input type="number" id="emp-prazo" placeholder="12" min="1" max="120" oninput="simularEmprestimo()"></div>
-      <div class="fg"><label>Dia de Vencimento</label>
-        <select id="emp-dia" onchange="simularEmprestimo()">
-          <option value="5">Dia 5</option>
-          <option value="10">Dia 10</option>
-          <option value="15">Dia 15</option>
-          <option value="20">Dia 20</option>
-          <option value="25">Dia 25</option>
-        </select>
-      </div>
-    </div>
-    <div class="fg" style="margin-bottom:4px">
-      <label>Amortização</label>
-      <select id="emp-sistema" onchange="simularEmprestimo()">
-        <option value="PRICE">Tabela Price — parcelas fixas</option>
-        <option value="SAC">SAC — parcelas decrescentes</option>
-      </select>
-    </div>
-    <div id="emp-preview"></div>
-    <div class="mbtns">
-      <button class="btn btn-ghost" onclick="closeMod('novo-emp')">Cancelar</button>
-      <button class="btn btn-dark" onclick="salvarEmprestimo()">Confirmar →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL: PAGAMENTO ══════════════════════════════════ -->
+<!-- ═══ MODAL: PAGAMENTO (único modal fixo restante) ═════ -->
 <div class="moverlay" id="mod-pagamento" onclick="if(event.target===this)closeMod('pagamento')">
   <div class="modal">
     <div class="modal-title">Registrar Pagamento</div>
