@@ -30,22 +30,27 @@ PAGE_RENDERS.emprestimos = async function() {
 
       <div class="twrap">
         <table class="ttable">
-          <thead><tr><th>Devedor</th><th>Valor</th><th>Tipo</th><th>Status</th><th>Garantia</th><th>Data</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Devedor</th><th>Apelido</th><th>Valor</th><th>Tipo</th><th>Status</th><th>Data</th><th></th></tr></thead>
           <tbody>
             ${(propostas||[]).map(p => {
               const isFlat = p.tipo_taxa === 'FLAT';
+              const num    = p.numero ? `<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">#${String(p.numero).padStart(4,'0')}</span>` : '—';
               return `<tr>
-                <td><b>${nome(p.devedor_id)}</b>${p.proposta_origem_id?'<span class="tag tag-warn" style="margin-left:6px;font-size:10px">Reneg.</span>':''}</td>
+                <td>${num}</td>
+                <td>
+                  <b>${nome(p.devedor_id)}</b>
+                  ${p.proposta_origem_id?'<span class="tag tag-warn" style="margin-left:6px;font-size:10px">Reneg.</span>':''}
+                </td>
+                <td style="font-size:12px;color:var(--muted)">${p.apelido||'—'}</td>
                 <td>${fmt(p.valor_solicitado_centavos)}${isFlat&&p.valor_flat_centavos?` → <b style="color:var(--terra)">${fmt(p.valor_flat_centavos)}</b>`:''}</td>
                 <td style="font-size:12px;color:var(--muted)">${isFlat?'Flat':`${p.prazo_meses}x ${p.sistema_amortizacao}`}</td>
                 <td>${tagStatus(p.status)}</td>
-                <td style="font-size:12px;color:var(--muted)">${p.garantia||'—'}</td>
                 <td style="color:var(--muted);font-size:12px">${fmtData(p.criado_em?.split('T')[0])}</td>
-                <td style="display:flex;gap:6px">
+                <td>
                   <button class="btn btn-ghost btn-sm" onclick="abrirDetalhe('${p.id}')">Ver</button>
                 </td>
               </tr>`;
-            }).join('') || `<tr><td colspan="7" class="empty">Nenhum empréstimo.</td></tr>`}
+            }).join('') || `<tr><td colspan="8" class="empty">Nenhum empréstimo.</td></tr>`}
           </tbody>
         </table>
       </div>
@@ -98,6 +103,8 @@ async function abrirDetalhe(id) {
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0;background:var(--border)">
         ${[
+          ['Número', p.numero ? `#${String(p.numero).padStart(4,'0')}` : '—'],
+          ['Apelido', p.apelido||'—'],
           ['Tipo', isFlat?'Taxa Flat':`${p.prazo_meses}x ${p.sistema_amortizacao}`],
           ['Emprestado', fmt(p.valor_solicitado_centavos)],
           isFlat ? ['A receber', fmt(p.valor_flat_centavos||0)] : ['Taxa', p.taxa_juros_mensal_bp?(p.taxa_juros_mensal_bp/100).toFixed(2)+'%/mês':'—'],
@@ -372,7 +379,10 @@ async function abrirNovoEmprestimo() {
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:4px">
+        <div class="fg"><label>Apelido / Referência</label>
+          <input type="text" id="nemp-apelido" placeholder="Ex: Rick Quinzena, Douglas 3ª">
+        </div>
         <div class="fg"><label>Garantia</label>
           <input type="text" id="nemp-garantia" placeholder="iPhone, moto...">
         </div>
@@ -472,6 +482,7 @@ async function salvarEmprestimo() {
   const tipo      = document.getElementById('nemp-tipo').value;
   const garantia  = document.getElementById('nemp-garantia').value.trim();
   const obs       = document.getElementById('nemp-obs').value.trim();
+  const apelido   = document.getElementById('nemp-apelido').value.trim();
   if (!devedorId || !valor) { toast('Preencha os campos obrigatórios.', 'err'); return; }
 
   const principal = Math.round(valor * 100);
@@ -483,6 +494,7 @@ async function salvarEmprestimo() {
     valor_aprovado_centavos:   principal,
     valor_liberado_centavos:   principal,
     garantia: garantia||null, observacao: obs||null,
+    apelido:  apelido||null,
     score_no_momento: 0, renda_no_momento_centavos: 0,
     comprometimento_pct: 0, iof_centavos: 0,
     taxa_juros_mensal_bp: 0, prazo_meses: 1, sistema_amortizacao: 'PRICE',
