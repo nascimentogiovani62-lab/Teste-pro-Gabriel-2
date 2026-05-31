@@ -159,12 +159,13 @@
   </main>
 </div>
 
-<!-- ═══ MODAL: PAGAMENTO ══════════════════════════════════ -->
+<!-- ═══ MODAL: PAGAMENTO — substitui o atual no index.html ══ -->
 <div class="moverlay" id="mod-pagamento" onclick="if(event.target===this)closeMod('pagamento')">
   <div class="modal">
     <div class="modal-title">Registrar Pagamento</div>
     <div class="modal-desc">Confirme os dados do pagamento desta parcela.</div>
     <input type="hidden" id="pay-id">
+    <input type="hidden" id="pay-parcial" value="0">
     <div id="pay-info"></div>
     <div class="fg" style="margin-bottom:12px">
       <label>Valor Recebido (R$)</label>
