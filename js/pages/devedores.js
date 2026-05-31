@@ -1,4 +1,4 @@
-// js/pages/devedores.js — v2
+// js/pages/devedores.js — v2.1
 // Inclui: saldo devedor por cliente, post-its vinculados
 
 PAGE_RENDERS.devedores = async function() {
