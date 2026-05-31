@@ -1,4 +1,4 @@
-// js/pages/emprestimos.js — v2
+// js/pages/emprestimos.js — v2.1
 // Suporta: taxa flat, datas livres, garantia, renegociação
 
 let _filtroDevedor = null;
