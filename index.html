@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#f5f3ef">
-<title>Creditadora</title>
+<meta name="theme-color" content="#f0ebe0">
+<title>Saburi Credit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231a1a18'/><text x='50%25' y='54%25' font-size='16' font-weight='600' fill='%23f5f3ef' text-anchor='middle' dominant-baseline='central' font-family='system-ui,sans-serif'>C</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%231a2e4a'/><path d='M6 16 Q6 6 16 6 Q26 6 26 16' fill='none' stroke='%23f0ebe0' stroke-width='2.5' stroke-linecap='round'/><polygon points='23,11 28,16 23,21' fill='%23f0ebe0'/><path d='M26 16 Q26 26 16 26 Q6 26 6 16' fill='none' stroke='%234a7ab5' stroke-width='2.5' stroke-linecap='round'/><polygon points='9,21 4,16 9,11' fill='%234a7ab5'/><circle cx='27' cy='5' r='5' fill='%23f0ebe0'/><text x='27' y='8' text-anchor='middle' font-size='6' font-weight='700' fill='%231a2e4a' font-family='Georgia,serif'>%24</text></svg>">
 <link rel="stylesheet" href="css/base.css">
 </head>
 <body>
@@ -17,10 +17,19 @@
     <div class="auth-left-inner">
 
       <div class="al-brand">
-        <div class="al-logo-icon">C</div>
+        <!-- Logo SVG inline -->
+        <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <circle cx="22" cy="22" r="22" fill="#1a2e4a"/>
+          <path d="M8 22 Q8 8 22 8 Q36 8 36 22" fill="none" stroke="#f0ebe0" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="33,15 40,22 33,29" fill="#f0ebe0"/>
+          <path d="M36 22 Q36 36 22 36 Q8 36 8 22" fill="none" stroke="#4a7ab5" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="11,29 4,22 11,15" fill="#4a7ab5"/>
+          <circle cx="38" cy="6" r="7" fill="#f0ebe0"/>
+          <text x="38" y="10" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#1a2e4a">$</text>
+        </svg>
         <div>
-          <div class="al-logo-name">Creditadora</div>
-          <div class="al-logo-sub">Controle de Empréstimos</div>
+          <div class="al-logo-name">Saburi Credit</div>
+          <div class="al-logo-sub">Soluções Financeiras</div>
         </div>
       </div>
 
@@ -84,7 +93,7 @@
 
   <div class="auth-right">
     <div class="auth-box">
-      <div class="auth-eyebrow">Creditadora</div>
+      <div class="auth-eyebrow">Saburi Credit</div>
       <div class="auth-title">Bem-vindo de volta</div>
       <div class="auth-fg">
         <label>E-mail</label>
@@ -104,7 +113,18 @@
 
 <!-- ═══ MOBILE HEADER ════════════════════════════════════ -->
 <div class="mob-header" id="mob-header" style="display:none">
-  <div class="mob-logo">Creditadora</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <svg width="24" height="24" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="22" fill="#1a2e4a"/>
+      <path d="M8 22 Q8 8 22 8 Q36 8 36 22" fill="none" stroke="#f0ebe0" stroke-width="3" stroke-linecap="round"/>
+      <polygon points="33,15 40,22 33,29" fill="#f0ebe0"/>
+      <path d="M36 22 Q36 36 22 36 Q8 36 8 22" fill="none" stroke="#4a7ab5" stroke-width="3" stroke-linecap="round"/>
+      <polygon points="11,29 4,22 11,15" fill="#4a7ab5"/>
+      <circle cx="38" cy="6" r="7" fill="#f0ebe0"/>
+      <text x="38" y="10" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#1a2e4a">$</text>
+    </svg>
+    <span class="mob-logo">Saburi Credit</span>
+  </div>
   <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
 </div>
 
@@ -113,9 +133,23 @@
   <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <aside id="sidebar">
-    <div class="side-logo">C</div>
+    <!-- Logo na sidebar -->
+    <div style="display:flex;align-items:center;justify-content:center;padding:18px 0 14px">
+      <svg width="32" height="32" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="22" fill="#1a2e4a"/>
+        <path d="M8 22 Q8 8 22 8 Q36 8 36 22" fill="none" stroke="#f0ebe0" stroke-width="3" stroke-linecap="round"/>
+        <polygon points="33,15 40,22 33,29" fill="#f0ebe0"/>
+        <path d="M36 22 Q36 36 22 36 Q8 36 8 22" fill="none" stroke="#4a7ab5" stroke-width="3" stroke-linecap="round"/>
+        <polygon points="11,29 4,22 11,15" fill="#4a7ab5"/>
+        <circle cx="38" cy="6" r="7" fill="#f0ebe0"/>
+        <text x="38" y="10" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#1a2e4a">$</text>
+      </svg>
+    </div>
+
     <div class="snav">
-      <div class="ni act" id="nav-dashboard" data-tip="Dashboard" onclick="goPage('dashboard')">⬜</div>
+      <div class="ni act" id="nav-dashboard" data-tip="Dashboard" onclick="goPage('dashboard')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </div>
       <div class="ni" id="nav-emprestimos" data-tip="Empréstimos" onclick="goPage('emprestimos')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       </div>
@@ -124,14 +158,15 @@
       </div>
       <div class="ni" id="nav-devedores" data-tip="Devedores" onclick="goPage('devedores')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <div class="ni" id="nav-postits" data-tip="Post-its" onclick="goPage('postits')">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="ni" id="nav-postits" data-tip="Post-its" onclick="goPage('postits')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </div>
     </div>
+
     <div class="side-footer">
-      <div class="side-avatar" id="side-avatar" title="Sair" onclick="doLogout()">G</div>
+      <div class="side-avatar" id="side-avatar" title="Sair" onclick="doLogout()">S</div>
     </div>
-</div>
   </aside>
 
   <main>
@@ -140,9 +175,6 @@
       <div class="tb-right">
         <button class="btn btn-ghost btn-sm" onclick="goPage('devedores');novoDevedor()">+ Devedor</button>
         <button class="btn btn-dark btn-sm" onclick="abrirNovoEmprestimo()">+ Empréstimo</button>
-        <div class="content page" id="page-postits">
-        <div id="postits-content"></div>
-        </div>
       </div>
     </div>
 
@@ -150,6 +182,7 @@
     <div class="content page" id="page-emprestimos"><div id="emprestimos-content"></div></div>
     <div class="content page" id="page-parcelas"><div id="parcelas-content"></div></div>
     <div class="content page" id="page-devedores"><div id="devedores-content"></div></div>
+    <div class="content page" id="page-postits"><div id="postits-content"></div></div>
   </main>
 </div>
 
@@ -183,12 +216,10 @@
   <div class="modal" style="width:500px">
     <div class="modal-title">Novo Empréstimo</div>
     <div class="modal-desc">Configure e simule antes de confirmar.</div>
-
     <div class="fg" style="margin-bottom:12px">
       <label>Devedor *</label>
       <select id="emp-devedor"></select>
     </div>
-
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
       <div class="fg"><label>Valor (R$) *</label><input type="number" id="emp-valor" placeholder="5.000" step="100" oninput="simularEmprestimo()"></div>
       <div class="fg"><label>Taxa Mensal (%) *</label><input type="number" id="emp-taxa" placeholder="3.5" step="0.1" value="3.5" oninput="simularEmprestimo()"></div>
@@ -203,7 +234,6 @@
         </select>
       </div>
     </div>
-
     <div class="fg" style="margin-bottom:4px">
       <label>Amortização</label>
       <select id="emp-sistema" onchange="simularEmprestimo()">
@@ -211,9 +241,7 @@
         <option value="SAC">SAC — parcelas decrescentes</option>
       </select>
     </div>
-
     <div id="emp-preview"></div>
-
     <div class="mbtns">
       <button class="btn btn-ghost" onclick="closeMod('novo-emp')">Cancelar</button>
       <button class="btn btn-dark" onclick="salvarEmprestimo()">Confirmar →</button>
