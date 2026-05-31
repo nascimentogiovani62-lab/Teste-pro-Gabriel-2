@@ -1,4 +1,4 @@
-// js/app.js:
+// js/app.js
 
 // ── Formatação ────────────────────────────────────────
 function fmt(centavos) {
