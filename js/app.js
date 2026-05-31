@@ -30,16 +30,14 @@ function tagStatus(status) {
   };
   const lbl = {
     EM_DIA:'Em Dia', PAGO:'Pago', APROVADA:'Aprovada',
-    INADIMPLENTE:'Inadimplente', RECUSADA:'Recusada', ATRASADA:'Atrasada',
+    INADIMPLENTE:'Inadimplente', RECUSADA:'Renegociado', ATRASADA:'Atrasada',
     PENDENTE:'Pendente', EM_ANALISE:'Em Análise',
     AGUARDANDO_ASSINATURA:'Ag. Assinatura', PAGA:'Paga',
   };
   return `<span class="tag ${cls[status]||'tag-neu'}">${lbl[status]||status}</span>`;
 }
-window.fmt = fmt;
-window.fmtData = fmtData;
-window.diasAte = diasAte;
-window.calcAtraso = calcAtraso;
+window.fmt = fmt; window.fmtData = fmtData;
+window.diasAte = diasAte; window.calcAtraso = calcAtraso;
 window.tagStatus = tagStatus;
 
 // ── Toast ─────────────────────────────────────────────
@@ -55,8 +53,7 @@ window.toast = toast;
 // ── Modal ─────────────────────────────────────────────
 function openMod(id)  { document.getElementById('mod-' + id)?.classList.add('open'); }
 function closeMod(id) { document.getElementById('mod-' + id)?.classList.remove('open'); }
-window.openMod = openMod;
-window.closeMod = closeMod;
+window.openMod = openMod; window.closeMod = closeMod;
 
 // ── Sidebar mobile ────────────────────────────────────
 function toggleSidebar() {
@@ -71,7 +68,8 @@ const PAGE_TITLES = {
   emprestimos: 'Empréstimos',
   parcelas:    'Parcelas',
   devedores:   'Devedores',
-  postits: 'Post-its',
+  postits:     'Post-its',
+  relatorio:   'Relatório',
 };
 window.PAGE_RENDERS = {};
 
@@ -92,11 +90,9 @@ function iniciarApp(user) {
   document.getElementById('auth-screen').classList.remove('show');
   document.getElementById('app').classList.add('show');
   document.getElementById('mob-header').style.display = '';
-
-  const inicial = (user.email || 'U')[0].toUpperCase();
+  const inicial = (user.email || 'S')[0].toUpperCase();
   const av = document.getElementById('side-avatar');
   if (av) { av.textContent = inicial; av.title = user.email; }
-
   goPage('dashboard');
 }
 window.iniciarApp = iniciarApp;
